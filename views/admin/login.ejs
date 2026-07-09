@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Đăng Nhập</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body { background: linear-gradient(135deg, #046148 0%, #054d3a 100%); }
+    .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-card { background: #fff; border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+    .login-card h1 { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: var(--green); text-align: center; margin: 0 0 8px; }
+    .login-card p { color: #999; text-align: center; margin: 0 0 32px; font-size: 13px; }
+    .login-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 12px; text-transform: uppercase; color: #666; font-weight: 600; margin-bottom: 8px; }
+    .form-group input { padding: 12px 16px; border: 1px solid #E8E4DC; border-radius: 8px; font-size: 14px; font-family: var(--font-sans); outline: none; }
+    .form-group input:focus { border-color: var(--gold); background: rgba(4,97,72,.02); }
+    .login-btn { padding: 12px; background: linear-gradient(135deg, var(--green), var(--green-mid)); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: all .2s; }
+    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(4,97,72,.25); }
+    .error { background: rgba(220,53,69,.1); color: #dc3545; padding: 12px; border-radius: 8px; text-align: center; font-size: 13px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+      <h1>VIETBLUETOUR</h1>
+      <p>Admin Dashboard</p>
+
+      <% if (message) { %>
+        <div class="error"><%= message %></div>
+      <% } %>
+
+      <form class="login-form" method="POST" action="/admin/login">
+        <div class="form-group">
+          <label for="username">Tên Đăng Nhập</label>
+          <input type="text" id="username" name="username" placeholder="admin" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mật Khẩu</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="login-btn">Đăng Nhập</button>
+      </form>
+
+      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #E8E4DC; text-align: center; font-size: 12px; color: #999;">
+        <p style="margin: 0 0 8px;">Tài khoản demo:</p>
+        <p style="margin: 0; color: #666;"><strong>admin</strong> / <strong>123456</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // For demo purposes, show password on double click
+    const passwordInput = document.getElementById('password');
+    let isVisible = false;
+    
+    passwordInput.addEventListener('dblclick', () => {
+      isVisible = !isVisible;
+      passwordInput.type = isVisible ? 'text' : 'password';
+    });
+  </script>
+</body>
+</html>

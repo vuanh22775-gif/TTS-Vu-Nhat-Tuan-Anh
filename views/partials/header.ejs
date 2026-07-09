@@ -1,0 +1,86 @@
+<header class="vbt-header" id="vbt-header">
+  <div class="container">
+    <div class="vbt-header-inner">
+      <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+
+    <img
+        src="/media/logo_vbt.png"
+        alt="VietBlueTour Logo"
+        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=120&h=120&fit=crop';"
+        style="
+            width:60px;
+            height:60px;
+            object-fit:contain;
+            display:block;
+        "
+    >
+
+    <div>
+        <div style="
+            color:#fff;
+            font-family:Georgia,serif;
+            font-size:18px;
+            font-weight:700;
+            letter-spacing:2px;
+            line-height:1;
+        ">
+            VIETBLUETOUR
+        </div>
+
+        <div style="
+            color:#C9A96E;
+            font-size:8px;
+            letter-spacing:2px;
+            margin-top:4px;
+        ">
+            LUXURY TRAVEL EXPERIENCE
+        </div>
+    </div>
+
+</a>
+
+      <nav class="vbt-nav">
+        <a href="/tour-trong-nuoc">Tour trong nước</a>
+        <a href="/tour-nuoc-ngoai">Tour nước ngoài</a>
+        <a href="/visa">Visa</a>
+        <a href="/combo-voucher">Combo & Voucher</a>
+        <a href="/homestay-villa">Homestay & Villa</a>
+        <a href="/ve-chung-toi">Về chúng tôi</a>
+        <a href="/lien-he">Liên hệ</a>
+      </nav>
+
+      <div class="vbt-header-actions">
+        <button class="btn-outline-gold" onclick="const el = document.getElementById('cta-name'); if(el) el.focus(); else window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});">Đặt tư vấn</button>
+        <button class="vbt-burger" id="vbt-burger" aria-label="Mở menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="vbt-drawer-overlay" id="vbt-drawer-overlay">
+  <div class="vbt-drawer-bg"></div>
+  <div class="vbt-drawer">
+    <div class="vbt-drawer-top">
+      <div class="vbt-logo-text">VIETBLUETOUR</div>
+      <button class="vbt-drawer-close" id="vbt-drawer-close" aria-label="Đóng menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <nav class="vbt-drawer-nav">
+      <a href="/tour-trong-nuoc">Tour trong nước</a>
+      <a href="/tour-nuoc-ngoai">Tour nước ngoài</a>
+      <a href="/visa">Visa</a>
+      <a href="/combo-voucher">Combo & Voucher</a>
+      <a href="/homestay-villa">Homestay & Villa</a>
+      <a href="/ve-chung-toi">Về chúng tôi</a>
+      <a href="/lien-he">Liên hệ</a>
+    </nav>
+
+    <a href="/lien-he" class="btn-book-now" style="display:block; text-align:center; text-decoration:none;">
+    tư vấn miễn phí
+</a>
+  </div>
+</div>

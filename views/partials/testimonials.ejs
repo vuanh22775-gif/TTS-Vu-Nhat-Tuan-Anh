@@ -1,0 +1,57 @@
+<section class="section" style="background-color:#FAF8F4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">
+        <div class="line l"></div>
+        <span>Khách hàng nói về chúng tôi</span>
+        <div class="line r"></div>
+      </div>
+      <h2 class="section-title">
+        Hành Trình Của Bạn<br />
+        <em>Là Thành Công Của Chúng Tôi</em>
+      </h2>
+    </div>
+
+    <div class="testi-track-wrap">
+      <div class="testi-track" id="testi-track">
+        <% reviews.forEach((r, i) => { %>
+          <div class="testi-slide <%= i === 0 ? 'active' : '' %>">
+            <div class="testi-card">
+              <div class="testi-quote">"</div>
+              <div class="testi-stars">
+                <% for (let s = 1; s <= 5; s++) { %>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="<%= s <= r.rating ? 'currentColor' : 'none' %>" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <% } %>
+              </div>
+              <p class="testi-text">"<%= r.text %>"</p>
+              <div class="testi-line"></div>
+              <div class="testi-author">
+                <div class="testi-avatar" style="background-color:<%= r.avatarBg %>">
+                  <span><%= r.initials %></span>
+                </div>
+                <div>
+                  <div class="testi-name"><%= r.name %></div>
+                  <div class="testi-meta"><%= r.location %> · <%= r.tour %></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="testi-controls">
+      <button class="circle-btn" id="testi-prev" aria-label="Trước">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="dots" id="testi-dots">
+        <% reviews.forEach((r, i) => { %>
+          <button class="<%= i === 0 ? 'active' : '' %>"></button>
+        <% }) %>
+      </div>
+      <button class="circle-btn solid" id="testi-next" aria-label="Sau">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>

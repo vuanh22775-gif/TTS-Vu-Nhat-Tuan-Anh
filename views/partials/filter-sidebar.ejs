@@ -1,0 +1,45 @@
+<!-- Filter Sidebar -->
+<div class="filter-sidebar">
+  <div class="filter-group">
+    <h3>Khu vực</h3>
+    <div class="filter-option">
+      <input type="checkbox" id="region-north" class="filter-checkbox" value="Miền Bắc">
+      <label for="region-north">Miền Bắc</label>
+    </div>
+    <div class="filter-option">
+      <input type="checkbox" id="region-center" class="filter-checkbox" value="Miền Trung">
+      <label for="region-center">Miền Trung</label>
+    </div>
+    <div class="filter-option">
+      <input type="checkbox" id="region-south" class="filter-checkbox" value="Miền Nam">
+      <label for="region-south">Miền Nam</label>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <h3>Mức giá (VNĐ)</h3>
+    <div class="price-range">
+      <input type="text" id="price-min" placeholder="Từ" class="filter-input" style="width: 50%;">
+      <span>—</span>
+      <input type="text" id="price-max" placeholder="Đến" class="filter-input" style="width: 50%;">
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <h3>Thời gian</h3>
+    <div class="filter-option">
+      <input type="checkbox" id="duration-1-2" class="filter-checkbox" value="1-2">
+      <label for="duration-1-2">1-2 ngày</label>
+    </div>
+    <div class="filter-option">
+      <input type="checkbox" id="duration-3-5" class="filter-checkbox" value="3-5">
+      <label for="duration-3-5">3-5 ngày</label>
+    </div>
+    <div class="filter-option">
+      <input type="checkbox" id="duration-6plus" class="filter-checkbox" value="6+">
+      <label for="duration-6plus">6 ngày trở lên</label>
+    </div>
+  </div>
+
+  <button class="btn-outline-green" id="reset-filters" style="width: 100%;">Xoá bộ lọc</button>
+</div>

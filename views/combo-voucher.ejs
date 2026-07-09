@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .combo-section { padding: 96px 0; background: #fff; }
+    .combo-filter { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 48px; justify-content: center; }
+    .combo-filter-btn { padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--green); 
+                        background: transparent; color: var(--green); font-size: 13px; font-weight: 500; 
+                        cursor: pointer; transition: all .2s; }
+    .combo-filter-btn.active { background: var(--green); color: #fff; }
+    .combo-filter-btn:hover { transform: translateY(-2px); }
+
+    .combo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .combo-card { position: relative; border-radius: 16px; overflow: hidden; background: #fff; 
+                  border: 1px solid #E8E4DC; transition: all .3s; display: flex; flex-direction: column; }
+    .combo-card:hover { box-shadow: 0 15px 40px rgba(4,97,72,.15); transform: translateY(-5px); border-color: var(--gold); }
+    
+    .combo-image { position: relative; aspect-ratio: 4/3; overflow: hidden; background: #E8E4DC; }
+    .combo-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+    .combo-card:hover .combo-image img { transform: scale(1.08); }
+    
+    .combo-badge { position: absolute; top: 12px; left: 12px; padding: 6px 12px; border-radius: 20px; 
+                   color: #fff; font-size: 11px; font-weight: 600; background: var(--gold); letter-spacing: .05em; }
+    .combo-badge.hot { background: #E84C3D; }
+    .combo-badge.new { background: #046148; }
+    
+    .combo-discount { position: absolute; top: 12px; right: 12px; width: 60px; height: 60px; 
+                      display: flex; align-items: center; justify-content: center; 
+                      background: linear-gradient(135deg, #E84C3D, #C41B1B); color: #fff; 
+                      border-radius: 50%; font-weight: 700; font-size: 18px; }
+    
+    .combo-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .combo-type { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+    .combo-name { font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: #1A1A1A; 
+                  margin: 0 0 12px; line-height: 1.35; }
+    .combo-highlights { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .combo-highlight { display: inline-block; padding: 4px 10px; background: rgba(4,97,72,.08); 
+                       color: var(--green); border-radius: 4px; font-size: 11px; }
+    
+    .combo-prices { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
+    .combo-old-price { text-decoration: line-through; color: #C0C0C0; font-size: 14px; }
+    .combo-new-price { font-family: var(--font-serif); font-size: 24px; font-weight: 700; color: var(--green); }
+    .combo-per { font-size: 12px; color: #A0A0A0; }
+    
+    .combo-expiry { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #E84C3D; margin-bottom: 16px; }
+    .combo-expiry svg { width: 14px; height: 14px; }
+    
+    .combo-buttons { display: flex; gap: 10px; margin-top: auto; }
+    .combo-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; 
+                 cursor: pointer; transition: all .2s; border: none; }
+    .combo-btn-book { background: var(--green); color: #fff; }
+    .combo-btn-book:hover { background: var(--green-mid); transform: translateY(-2px); }
+    .combo-btn-info { background: transparent; border: 1.5px solid var(--green); color: var(--green); }
+    .combo-btn-info:hover { background: var(--green); color: #fff; }
+  </style>
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header-hero">
+      <div class="container">
+        <h1>Combo & Voucher</h1>
+        <p>Những deal cực hot, ưu đãi lớn chỉ có tại VIETBLUETOUR</p>
+      </div>
+    </div>
+
+    <!-- Combo & Voucher Section -->
+    <section class="combo-section">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 48px;">
+          <div class="section-eyebrow" style="justify-content: center; margin-bottom: 20px;">
+            <div class="line l"></div>
+            <span>Ưu đãi đặc biệt</span>
+            <div class="line r"></div>
+          </div>
+          <h2 class="section-title">Combo & Voucher Độc Quyền</h2>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="combo-filter">
+          <button class="combo-filter-btn active" data-filter="all">Tất Cả</button>
+          <button class="combo-filter-btn" data-filter="hotel">Khách Sạn</button>
+          <button class="combo-filter-btn" data-filter="resort">Resort</button>
+          <button class="combo-filter-btn" data-filter="combo">Combo Tour</button>
+          <button class="combo-filter-btn" data-filter="flight">Flight + Hotel</button>
+        </div>
+
+        <!-- Combo Grid -->
+        <div class="combo-grid">
+          <!-- Combo 1 -->
+          <div class="combo-card" data-category="hotel">
+            <div class="combo-image">
+              <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=300&fit=crop" alt="Combo">
+              <div class="combo-badge hot">HOT</div>
+              <div class="combo-discount">-30%</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-type">Khách Sạn 5 Sao</div>
+              <h3 class="combo-name">Luxury Hotel Hanoi Combo</h3>
+              <div class="combo-highlights">
+                <span class="combo-highlight">3 đêm</span>
+                <span class="combo-highlight">Breakfast</span>
+                <span class="combo-highlight">Spa</span>
+              </div>
+              <div class="combo-prices">
+                <span class="combo-old-price">6.500.000₫</span>
+                <span class="combo-new-price">4.550.000₫</span>
+              </div>
+              <div class="combo-expiry">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></svg>
+                Hết hạn: 31/12/2024
+              </div>
+              <div class="combo-buttons">
+                <button class="combo-btn combo-btn-book">Đặt Ngay</button>
+                <button class="combo-btn combo-btn-info">Chi Tiết</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combo 2 -->
+          <div class="combo-card" data-category="resort">
+            <div class="combo-image">
+              <img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=300&fit=crop" alt="Combo">
+              <div class="combo-badge new">MỚI</div>
+              <div class="combo-discount">-25%</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-type">Resort Biển</div>
+              <h3 class="combo-name">Beach Paradise Resort Combo</h3>
+              <div class="combo-highlights">
+                <span class="combo-highlight">4 đêm</span>
+                <span class="combo-highlight">All-inclusive</span>
+                <span class="combo-highlight">Water Sports</span>
+              </div>
+              <div class="combo-prices">
+                <span class="combo-old-price">8.900.000₫</span>
+                <span class="combo-new-price">6.675.000₫</span>
+              </div>
+              <div class="combo-expiry">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></svg>
+                Hết hạn: 15/01/2025
+              </div>
+              <div class="combo-buttons">
+                <button class="combo-btn combo-btn-book">Đặt Ngay</button>
+                <button class="combo-btn combo-btn-info">Chi Tiết</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combo 3 -->
+          <div class="combo-card" data-category="combo">
+            <div class="combo-image">
+              <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop" alt="Combo">
+              <div class="combo-badge">BÁN CHẠY</div>
+              <div class="combo-discount">-20%</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-type">Tour + Hotel</div>
+              <h3 class="combo-name">Da Nang Escape Combo</h3>
+              <div class="combo-highlights">
+                <span class="combo-highlight">4 ngày 3 đêm</span>
+                <span class="combo-highlight">Tour đầy đủ</span>
+                <span class="combo-highlight">4 sao</span>
+              </div>
+              <div class="combo-prices">
+                <span class="combo-old-price">7.200.000₫</span>
+                <span class="combo-new-price">5.760.000₫</span>
+              </div>
+              <div class="combo-expiry">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></svg>
+                Hết hạn: 28/12/2024
+              </div>
+              <div class="combo-buttons">
+                <button class="combo-btn combo-btn-book">Đặt Ngay</button>
+                <button class="combo-btn combo-btn-info">Chi Tiết</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combo 4 -->
+          <div class="combo-card" data-category="flight">
+            <div class="combo-image">
+              <img src="https://images.unsplash.com/photo-1559707409-d90141b16ea5?w=400&h=300&fit=crop" alt="Combo">
+              <div class="combo-badge">TIẾT KIỆM</div>
+              <div class="combo-discount">-35%</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-type">Flight + Hotel</div>
+              <h3 class="combo-name">Tokyo Getaway Package</h3>
+              <div class="combo-highlights">
+                <span class="combo-highlight">Vé máy bay</span>
+                <span class="combo-highlight">5 đêm</span>
+                <span class="combo-highlight">Tự do</span>
+              </div>
+              <div class="combo-prices">
+                <span class="combo-old-price">12.500.000₫</span>
+                <span class="combo-new-price">8.125.000₫</span>
+              </div>
+              <div class="combo-expiry">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></svg>
+                Hết hạn: 10/01/2025
+              </div>
+              <div class="combo-buttons">
+                <button class="combo-btn combo-btn-book">Đặt Ngay</button>
+                <button class="combo-btn combo-btn-info">Chi Tiết</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combo 5 -->
+          <div class="combo-card" data-category="hotel">
+            <div class="combo-image">
+              <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop" alt="Combo">
+              <div class="combo-badge hot">HOT</div>
+              <div class="combo-discount">-28%</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-type">Luxury Hotel</div>
+              <h3 class="combo-name">HCM City Luxury Escape</h3>
+              <div class="combo-highlights">
+                <span class="combo-highlight">2 đêm</span>
+                <span class="combo-highlight">Trung tâm</span>
+                <span class="combo-highlight">Gym + Spa</span>
+              </div>
+              <div class="combo-prices">
+                <span class="combo-old-price">5.400.000₫</span>
+                <span class="combo-new-price">3.888.000₫</span>
+              </div>
+              <div class="combo-expiry">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></svg>
+                Hết hạn: 25/12/2024
+              </div>
+              <div class="combo-buttons">
+                <button class="combo-btn combo-btn-book">Đặt Ngay</button>
+                <button class="combo-btn combo-btn-info">Chi Tiết</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combo 6 -->
+          <div class="combo-card" data-category="resort">
+            <div class="combo-image">
+              <img src="https://images.unsplash.com/photo-1596371437968-a8d2c67196d8?w=400&h=300&fit=crop" alt="Combo">
+              <div class="combo-badge new">MỚI</div>
+              <div class="combo-discount">-22%</div>
+            </div>
+            <div class="combo-body">
+              <div class="combo-type">Resort Sapa</div>
+              <h3 class="combo-name">Sapa Mountain Resort</h3>
+              <div class="combo-highlights">
+                <span class="combo-highlight">3 đêm</span>
+                <span class="combo-highlight">Trekking</span>
+                <span class="combo-highlight">Văn hóa</span>
+              </div>
+              <div class="combo-prices">
+                <span class="combo-old-price">4.800.000₫</span>
+                <span class="combo-new-price">3.744.000₫</span>
+              </div>
+              <div class="combo-expiry">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path></svg>
+                Hết hạn: 05/01/2025
+              </div>
+              <div class="combo-buttons">
+                <button class="combo-btn combo-btn-book">Đặt Ngay</button>
+                <button class="combo-btn combo-btn-info">Chi Tiết</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <%- include('partials/cta') %>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterBtns = document.querySelectorAll('.combo-filter-btn');
+      const comboCards = document.querySelectorAll('.combo-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const filter = btn.dataset.filter;
+          comboCards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<div class="dest-card" onclick="window.location.href='/tour-trong-nuoc'" style="cursor:pointer;">
+  <img src="<%= dest.image %>" alt="<%= dest.name %>" />
+  <div class="dest-card-overlay"></div>
+  <div class="dest-card-top"></div>
+  <div class="dest-card-body">
+    <div class="dest-region"><%= dest.region %></div>
+    <div class="dest-name"><%= dest.name %></div>
+    <div class="dest-foot">
+      <span class="dest-tours"><%= dest.tours %> tour đang mở</span>
+      <span class="dest-view">
+        Xem tour
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
+    </div>
+  </div>
+</div>

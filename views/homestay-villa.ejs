@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .homestay-filter { padding: 32px 0; background: #fff; }
+    .homestay-types { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; justify-content: center; }
+    .type-btn { padding: 10px 20px; border-radius: 20px; border: 1.5px solid var(--green); 
+                background: transparent; color: var(--green); font-size: 13px; font-weight: 500; 
+                cursor: pointer; transition: all .2s; }
+    .type-btn.active { background: var(--green); color: #fff; }
+    .region-tabs { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .region-tab { padding: 8px 16px; border-radius: 20px; border: 1px solid #E8E4DC; background: #fff; 
+                  color: #666; font-size: 13px; cursor: pointer; transition: all .2s; }
+    .region-tab.active { background: var(--green); color: #fff; border-color: var(--green); }
+
+    .homestay-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .homestay-card { border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid #E8E4DC; 
+                     transition: all .3s; display: flex; flex-direction: column; }
+    .homestay-card:hover { box-shadow: 0 15px 40px rgba(4,97,72,.15); transform: translateY(-5px); }
+    
+    .homestay-image { position: relative; aspect-ratio: 4/3; overflow: hidden; background: #E8E4DC; }
+    .homestay-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+    .homestay-card:hover .homestay-image img { transform: scale(1.08); }
+    
+    .homestay-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 20px; 
+                      background: rgba(0,0,0,.6); color: #fff; font-size: 11px; font-weight: 600; 
+                      display: flex; align-items: center; gap: 4px; }
+    
+    .homestay-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .homestay-type { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+    .homestay-name { font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: #1A1A1A; 
+                     margin: 0 0 8px; line-height: 1.35; }
+    .homestay-location { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #999; margin-bottom: 12px; }
+    .homestay-location svg { color: var(--gold); flex-shrink: 0; }
+    
+    .homestay-specs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; font-size: 12px; }
+    .spec-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .spec-value { font-weight: 600; color: #1A1A1A; margin-bottom: 2px; }
+    .spec-label { color: #999; font-size: 11px; }
+    
+    .homestay-rating { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; font-size: 13px; }
+    .homestay-rating .stars { display: flex; gap: 2px; color: var(--gold); }
+    
+    .homestay-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 16px; }
+    .homestay-price-value { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--green); }
+    .homestay-price-per { font-size: 12px; color: #A0A0A0; }
+    
+    .homestay-amenities { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; font-size: 12px; }
+    .amenity { display: flex; align-items: center; gap: 6px; color: #666; }
+    .amenity svg { width: 12px; height: 12px; color: var(--gold); flex-shrink: 0; }
+    
+    .homestay-buttons { display: flex; gap: 8px; margin-top: auto; }
+    .btn-view { flex: 1; padding: 10px; border-radius: 8px; background: var(--green); color: #fff; 
+                font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; border: none; }
+    .btn-view:hover { background: var(--green-mid); transform: translateY(-2px); }
+    .btn-contact { flex: 1; padding: 10px; border-radius: 8px; background: transparent; 
+                   border: 1.5px solid var(--green); color: var(--green); font-size: 12px; 
+                   font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-contact:hover { background: var(--green); color: #fff; }
+  </style>
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header-hero">
+      <div class="container">
+        <h1>Homestay & Villa</h1>
+        <p>Tìm kiếm nơi ở độc đáo và thoải mái khắp Việt Nam</p>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <section class="homestay-filter">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 32px;">
+          <h2 class="section-title" style="margin-bottom: 0;">Bộ Sưu Tập Homestay & Villa Độc Quyền</h2>
+        </div>
+
+        <!-- Type Filter -->
+        <div style="margin-bottom: 32px;">
+          <div style="text-align: center; margin-bottom: 16px; font-size: 13px; color: #999; text-transform: uppercase; letter-spacing: .05em; font-weight: 600;">Loại hình</div>
+          <div class="homestay-types">
+            <button class="type-btn active" data-type="all">Tất Cả</button>
+            <button class="type-btn" data-type="homestay">Homestay</button>
+            <button class="type-btn" data-type="villa">Villa</button>
+          </div>
+        </div>
+
+        <!-- Region Filter -->
+        <div>
+          <div style="text-align: center; margin-bottom: 16px; font-size: 13px; color: #999; text-transform: uppercase; letter-spacing: .05em; font-weight: 600;">Miền</div>
+          <div class="region-tabs">
+            <button class="region-tab active" data-region="all">Tất Cả</button>
+            <button class="region-tab" data-region="north">Miền Bắc</button>
+            <button class="region-tab" data-region="center">Miền Trung</button>
+            <button class="region-tab" data-region="south">Miền Nam</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Homestay Grid Section -->
+    <section style="padding: 64px 0; background: #fff;">
+      <div class="container">
+        <div class="homestay-grid">
+          <!-- Homestay 1 -->
+          <div class="homestay-card" data-type="homestay" data-region="north">
+            <div class="homestay-image">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop" alt="Homestay">
+              <div class="homestay-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+                4.8
+              </div>
+            </div>
+            <div class="homestay-body">
+              <div class="homestay-type">Homestay</div>
+              <h3 class="homestay-name">Cozy Hanoi Old Quarter</h3>
+              <div class="homestay-location">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Hà Nội, Miền Bắc
+              </div>
+              <div class="homestay-specs">
+                <div class="spec-item">
+                  <div class="spec-value">2</div>
+                  <div class="spec-label">Phòng</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-value">4</div>
+                  <div class="spec-label">Khách</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-value">1</div>
+                  <div class="spec-label">Phòng tắm</div>
+                </div>
+              </div>
+              <div class="homestay-rating">
+                <div class="stars">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <span>(48 đánh giá)</span>
+              </div>
+              <div class="homestay-price">
+                <div class="homestay-price-value">850.000₫</div>
+                <div class="homestay-price-per">/đêm</div>
+              </div>
+              <div class="homestay-amenities">
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.111 16.404a5.5 5.5 0 017.778 0M15 13h.01M11 13h.01M8 13h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>WiFi</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 12m0 0l-4 4m4-4l4 4"></path></svg>
+                  <span>Điều hòa</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>Nước nóng</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>Tủ lạnh</span>
+                </div>
+              </div>
+              <div class="homestay-buttons">
+                <button class="btn-view">Xem Chi Tiết</button>
+                <button class="btn-contact">Liên Hệ</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Homestay 2 -->
+          <div class="homestay-card" data-type="villa" data-region="south">
+            <div class="homestay-image">
+              <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop" alt="Villa">
+              <div class="homestay-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+                4.9
+              </div>
+            </div>
+            <div class="homestay-body">
+              <div class="homestay-type">Villa</div>
+              <h3 class="homestay-name">Luxury Beach Villa HCM</h3>
+              <div class="homestay-location">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                TP.HCM, Miền Nam
+              </div>
+              <div class="homestay-specs">
+                <div class="spec-item">
+                  <div class="spec-value">4</div>
+                  <div class="spec-label">Phòng</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-value">10</div>
+                  <div class="spec-label">Khách</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-value">3</div>
+                  <div class="spec-label">Phòng tắm</div>
+                </div>
+              </div>
+              <div class="homestay-rating">
+                <div class="stars">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <span>(35 đánh giá)</span>
+              </div>
+              <div class="homestay-price">
+                <div class="homestay-price-value">3.500.000₫</div>
+                <div class="homestay-price-per">/đêm</div>
+              </div>
+              <div class="homestay-amenities">
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.111 16.404a5.5 5.5 0 017.778 0M15 13h.01M11 13h.01M8 13h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>WiFi</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 12m0 0l-4 4m4-4l4 4"></path></svg>
+                  <span>Hồ bơi</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>Ngoài trời</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>BBQ</span>
+                </div>
+              </div>
+              <div class="homestay-buttons">
+                <button class="btn-view">Xem Chi Tiết</button>
+                <button class="btn-contact">Liên Hệ</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Homestay 3 -->
+          <div class="homestay-card" data-type="homestay" data-region="center">
+            <div class="homestay-image">
+              <img src="https://images.unsplash.com/photo-1540932239986-310128078ceb?w=400&h=300&fit=crop" alt="Homestay">
+              <div class="homestay-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+                4.7
+              </div>
+            </div>
+            <div class="homestay-body">
+              <div class="homestay-type">Homestay</div>
+              <h3 class="homestay-name">Romantic Danang Retreat</h3>
+              <div class="homestay-location">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Đà Nẵng, Miền Trung
+              </div>
+              <div class="homestay-specs">
+                <div class="spec-item">
+                  <div class="spec-value">3</div>
+                  <div class="spec-label">Phòng</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-value">6</div>
+                  <div class="spec-label">Khách</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-value">2</div>
+                  <div class="spec-label">Phòng tắm</div>
+                </div>
+              </div>
+              <div class="homestay-rating">
+                <div class="stars">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <span>(62 đánh giá)</span>
+              </div>
+              <div class="homestay-price">
+                <div class="homestay-price-value">1.200.000₫</div>
+                <div class="homestay-price-per">/đêm</div>
+              </div>
+              <div class="homestay-amenities">
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.111 16.404a5.5 5.5 0 017.778 0M15 13h.01M11 13h.01M8 13h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>WiFi</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 12m0 0l-4 4m4-4l4 4"></path></svg>
+                  <span>Sân vườn</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>Nước nóng</span>
+                </div>
+                <div class="amenity">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>TV</span>
+                </div>
+              </div>
+              <div class="homestay-buttons">
+                <button class="btn-view">Xem Chi Tiết</button>
+                <button class="btn-contact">Liên Hệ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <%- include('partials/cta') %>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const typeBtns = document.querySelectorAll('.type-btn');
+      const regionTabs = document.querySelectorAll('.region-tab');
+      const homestayCards = document.querySelectorAll('.homestay-card');
+
+      function filterCards() {
+        const selectedType = Array.from(typeBtns).find(b => b.classList.contains('active'))?.dataset.type || 'all';
+        const selectedRegion = Array.from(regionTabs).find(t => t.classList.contains('active'))?.dataset.region || 'all';
+
+        homestayCards.forEach(card => {
+          const cardType = card.dataset.type;
+          const cardRegion = card.dataset.region;
+
+          const typeMatch = selectedType === 'all' || cardType === selectedType;
+          const regionMatch = selectedRegion === 'all' || cardRegion === selectedRegion;
+
+          card.style.display = typeMatch && regionMatch ? '' : 'none';
+        });
+      }
+
+      typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          typeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          filterCards();
+        });
+      });
+
+      regionTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          regionTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          filterCards();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

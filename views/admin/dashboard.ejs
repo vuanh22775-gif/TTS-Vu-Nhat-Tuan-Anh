@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body { background: #F5F5F5; }
+.admin-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+}
+.admin-sidebar {
+    grid-row: 1 / 3;     /* Chiếm cả header và content */
+    grid-column: 1;
+    background: linear-gradient(135deg, #046148 0%, #054d3a 100%);
+    color: #fff;
+    padding: 24px;
+}
+.admin-header {
+    grid-column: 2;
+    grid-row: 1;
+    background: #fff;
+    padding: 16px 24px;
+    border-bottom: 1px solid #E8E4DC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+    .admin-header h2 { margin: 0; color: var(--green); font-size: 20px; font-family: var(--font-serif); }
+    .admin-logout { background: var(--gold); color: var(--green); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
+.admin-main { padding: 32px; }
+    .sidebar-nav { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-nav li a { display: block; padding: 12px 16px; color: rgba(255,255,255,.7); border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500; transition: all .2s; }
+    .sidebar-nav li a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .sidebar-nav li a.active { background: #C9A96E; color: var(--green); }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
+    .stat-card { background: #fff; padding: 24px; border-radius: 12px; border-left: 4px solid var(--green); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    .stat-card h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; color: #A0A0A0; font-weight: 600; }
+    .stat-card .stat-value { font-family: var(--font-serif); font-size: 32px; font-weight: 700; color: var(--green); margin: 0; }
+    
+    .admin-table { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    .admin-table table { width: 100%; border-collapse: collapse; }
+    .admin-table th { background: #FAF8F4; padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; font-weight: 600; color: #666; border-bottom: 1px solid #E8E4DC; }
+    .admin-table td { padding: 16px; border-bottom: 1px solid #E8E4DC; font-size: 13px; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover { background: #FAF8F4; }
+    
+    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .status-active { background: rgba(4,97,72,.1); color: var(--green); }
+    .status-pending { background: rgba(201,169,110,.1); color: var(--gold); }
+    .status-cancelled { background: rgba(220,53,69,.1); color: #dc3545; }
+    
+    .action-btn { padding: 6px 12px; border: 1px solid #E8E4DC; background: transparent; border-radius: 6px; cursor: pointer; font-size: 11px; margin-right: 8px; transition: all .2s; }
+    .action-btn:hover { background: #FAF8F4; color: var(--green); border-color: var(--green); }
+    .action-btn.delete { border-color: #dc3545; color: #dc3545; }
+    .action-btn.delete:hover { background: rgba(220,53,69,.1); }
+
+    .section-title { margin-bottom: 20px; color: #1A1A1A; font-size: 18px; font-weight: 600; }
+    @media (max-width: 768px) {
+      .admin-container { grid-template-columns: 1fr; }
+      .admin-sidebar { display: none; }
+.admin-main {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 32px;
+}    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <%- include('partials/sidebar', { active: 'dashboard' }) %>
+
+    <!-- Header -->
+    <header class="admin-header">
+      <h2>Admin Dashboard</h2>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-size: 13px; color: #666;">
+          Xin chào, <strong><%= user.fullName %></strong>
+        </span>
+        <a href="/admin/logout" class="admin-logout">Đăng Xuất</a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <% if (typeof dbConnected !== 'undefined' && !dbConnected) { %>
+        <div class="db-warning">⚠️ Chưa kết nối được MongoDB nên chưa có dữ liệu thật (đơn đặt tour, liên hệ, doanh thu...). Kiểm tra biến <code>MONGODB_URI</code> trong file <code>.env</code>, sau đó chạy <code>npm run seed</code> để nạp dữ liệu mẫu.</div>
+      <% } %>
+      <h1 style="margin: 0 0 32px; color: #1A1A1A; font-size: 24px; font-weight: 700;">Dashboard</h1>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Tours Active</h3>
+          <p class="stat-value"><%= stats.tours || 0 %></p>
+        </div>
+        <div class="stat-card" style="border-left-color: #C9A96E;">
+          <h3>New Bookings</h3>
+          <p class="stat-value" style="color: #C9A96E;"><%= stats.newBookings || 0 %></p>
+        </div>
+        <div class="stat-card" style="border-left-color: #6c757d;">
+          <h3>New Contacts</h3>
+          <p class="stat-value" style="color: #6c757d;"><%= stats.newContacts || 0 %></p>
+        </div>
+        <div class="stat-card" style="border-left-color: #28a745;">
+          <h3>Total Revenue</h3>
+          <p class="stat-value" style="color: #28a745;"><%= (stats.totalRevenue || 0).toLocaleString('vi-VN') %>₫</p>
+        </div>
+      </div>
+
+      <div style="margin: -16px 0 32px;">
+        <a href="/admin/reports" style="font-size: 13px; color: var(--green); font-weight: 600;">Xem báo cáo doanh thu & lượt truy cập chi tiết →</a>
+      </div>
+
+      <!-- Recent Bookings -->
+      <div style="margin-top: 48px;">
+        <h2 class="section-title">Recent Bookings</h2>
+        <div class="admin-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Booking Code</th>
+                <th>Customer</th>
+                <th>Tour</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (bookings && bookings.length > 0) { %>
+                <% bookings.forEach(booking => { %>
+                  <tr>
+                    <td><strong><%= booking.bookingCode %></strong></td>
+                    <td><%= booking.customerName %></td>
+                    <td><%= booking.tourName %></td>
+                    <td><%= new Date(booking.departureDate).toLocaleDateString('vi-VN') %></td>
+                    <td><%= booking.totalPrice.toLocaleString('vi-VN') %>₫</td>
+                    <td><span class="status-badge status-<%= booking.status %>"><%= booking.status %></span></td>
+                    <td>
+                      <button class="action-btn">View</button>
+                      <button class="action-btn delete">Delete</button>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" style="text-align: center; color: #999;">Không có dữ liệu</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Contacts -->
+      <div style="margin-top: 48px;">
+        <h2 class="section-title">Recent Contacts</h2>
+        <div class="admin-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Số điện thoại</th>
+                <th>Ngày gửi</th>
+                <th>Trạng thái</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (contacts && contacts.length > 0) { %>
+                <% contacts.forEach(contact => { %>
+                  <tr>
+                    <td><strong><%= contact.name || 'Ẩn danh' %></strong></td>
+                    <td><%= contact.phone %></td>
+                    <td><%= new Date(contact.createdAt).toLocaleDateString('vi-VN') %></td>
+                    <td><span class="status-badge status-pending"><%= contact.status %></span></td>
+                    <td>
+                      <button class="action-btn">View</button>
+                      <button class="action-btn delete">Delete</button>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" style="text-align: center; color: #999;">Không có dữ liệu</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

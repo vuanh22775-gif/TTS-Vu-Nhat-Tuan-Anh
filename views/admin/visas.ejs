@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Manage Visa Services</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body { background: #F5F5F5; }
+.admin-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    grid-row: 1 / 3;
+    grid-column: 1;
+    background: linear-gradient(135deg, #046148 0%, #054d3a 100%);
+    color: #fff;
+    padding: 24px;
+}
+
+.admin-header {
+    grid-column: 2;
+    grid-row: 1;
+    background: #fff;
+    padding: 16px 24px;
+    border-bottom: 1px solid #E8E4DC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-main {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 32px;
+}    .admin-header h2 { margin: 0; color: var(--green); font-size: 20px; font-family: var(--font-serif); }
+    .admin-main { padding: 32px; grid-column: 2; }
+    .sidebar-nav { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-nav li a { display: block; padding: 12px 16px; color: rgba(255,255,255,.7); border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500; transition: all .2s; }
+    .sidebar-nav li a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .sidebar-nav li a.active { background: #C9A96E; color: var(--green); }
+    .btn-admin { padding: 10px 16px; background: var(--green); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all .2s; }
+    .btn-admin:hover { background: var(--green-mid); transform: translateY(-2px); }
+    .admin-table { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-top: 20px; }
+    .admin-table table { width: 100%; border-collapse: collapse; }
+    .admin-table th { background: #FAF8F4; padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; font-weight: 600; color: #666; border-bottom: 1px solid #E8E4DC; }
+    .admin-table td { padding: 16px; border-bottom: 1px solid #E8E4DC; font-size: 13px; }
+    .admin-table tr:hover { background: #FAF8F4; }
+    .action-btn { padding: 6px 12px; border: 1px solid #E8E4DC; background: transparent; border-radius: 6px; cursor: pointer; font-size: 11px; margin-right: 8px; transition: all .2s; }
+    .action-btn:hover { background: #FAF8F4; color: var(--green); border-color: var(--green); }
+    .action-btn.delete { border-color: #dc3545; color: #dc3545; }
+    .action-btn.delete:hover { background: rgba(220,53,69,.1); }
+    .db-warning { background: #FFF3CD; border: 1px solid #FFE69C; color: #664D03; padding: 14px 18px; border-radius: 8px; margin-bottom: 24px; font-size: 13px; }
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 1000; align-items: center; justify-content: center; }
+    .modal.show { display: flex; }
+    .modal-content { background: #fff; border-radius: 12px; padding: 32px; max-width: 560px; width: 90%; max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .modal-header h2 { margin: 0; color: var(--green); font-size: 20px; }
+    .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+    .form-group { margin-bottom: 16px; display: flex; flex-direction: column; }
+    .form-group label { font-size: 12px; text-transform: uppercase; color: #666; font-weight: 600; margin-bottom: 8px; }
+    .form-group input, .form-group select, .form-group textarea { padding: 10px; border: 1px solid #E8E4DC; border-radius: 6px; font-size: 13px; font-family: var(--font-sans); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-actions { display: flex; gap: 12px; margin-top: 24px; }
+    .form-actions button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    @media (max-width: 768px) {
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        display: none;
+    }
+
+    .admin-header,
+    .admin-main {
+        grid-column: 1;
+    }
+}
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <%- include('partials/sidebar', { active: 'visas' }) %>
+
+    <!-- Header -->
+    <header class="admin-header">
+      <h2>Manage Visa Services</h2>
+      <a href="/admin/logout" style="padding: 10px 16px; background: var(--gold); color: var(--green); border: none; border-radius: 6px; cursor: pointer; font-weight: 600; text-decoration: none;">Đăng Xuất</a>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <% if (typeof dbConnected !== 'undefined' && !dbConnected) { %>
+        <div class="db-warning">⚠️ Chưa kết nối được MongoDB. Kiểm tra biến <code>MONGODB_URI</code> trong file <code>.env</code> rồi khởi động lại server.</div>
+      <% } %>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+        <h1 style="margin: 0; color: #1A1A1A; font-size: 24px; font-weight: 700;">Visa Services Management</h1>
+        <button class="btn-admin" onclick="document.getElementById('visaModal').classList.add('show')">+ Add Service</button>
+      </div>
+
+      <div class="admin-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Quốc gia</th>
+              <th>Khu vực</th>
+              <th>Thời gian xử lý</th>
+              <th>Giá</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (visas && visas.length > 0) { %>
+              <% visas.forEach(visa => { %>
+                <tr>
+                  <td><strong><%= visa.country %></strong></td>
+                  <td><%= visa.region %></td>
+                  <td><%= visa.processingTime %></td>
+                  <td><%= visa.price %></td>
+                  <td>
+                    <form method="POST" action="/admin/visas/<%= visa._id %>/delete" style="display:inline;" onsubmit="return confirm('Xoá dịch vụ visa này?');">
+                      <button type="submit" class="action-btn delete">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align: center; color: #999; padding: 32px;">Chưa có dịch vụ visa nào. <a href="#" onclick="document.getElementById('visaModal').classList.add('show'); return false;" style="color: var(--green);">Thêm dịch vụ mới</a></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Visa Modal -->
+  <div class="modal" id="visaModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Visa Service</h2>
+        <button class="modal-close" onclick="document.getElementById('visaModal').classList.remove('show')">✕</button>
+      </div>
+      <form method="POST" action="/admin/visas">
+        <div class="form-group">
+          <label>Quốc gia *</label>
+          <input type="text" name="country" required placeholder="VD: Hàn Quốc">
+        </div>
+        <div class="form-group">
+          <label>Tiêu đề *</label>
+          <input type="text" name="title" required placeholder="VD: Visa du lịch Hàn Quốc">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Khu vực *</label>
+            <select name="region" required>
+              <option value="Châu Á">Châu Á</option>
+              <option value="Châu Âu">Châu Âu</option>
+              <option value="Châu Mỹ">Châu Mỹ</option>
+              <option value="Châu Úc">Châu Úc</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Thời gian xử lý *</label>
+            <input type="text" name="processingTime" required placeholder="VD: 5-7 ngày">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Giá (₫) *</label>
+          <input type="number" name="price" min="0" required>
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea name="description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Ảnh (URL)</label>
+          <input type="url" name="image">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-admin" style="background: transparent; border: 1px solid #E8E4DC; color: #666;" onclick="document.getElementById('visaModal').classList.remove('show')">Cancel</button>
+          <button type="submit" class="btn-admin">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

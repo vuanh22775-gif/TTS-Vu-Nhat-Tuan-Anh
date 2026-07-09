@@ -1,0 +1,31 @@
+<section id="domestic" class="section" style="background-color:#FAF8F4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">
+        <div class="line l"></div>
+        <span>Khám phá</span>
+        <div class="line r"></div>
+      </div>
+      <h2 class="section-title">Điểm Đến Nổi Bật</h2>
+      <p class="section-desc">
+        Từ vịnh biển huyền thoại đến phố cổ thơ mộng — mỗi điểm đến là một câu chuyện đặc sắc
+        đang chờ bạn khám phá.
+      </p>
+    </div>
+
+    <div class="dest-grid dest-grid-4">
+      <% destinations.slice(0, 4).forEach(dest => { %>
+        <%- include('dest-card', { dest }) %>
+      <% }) %>
+    </div>
+    <div class="dest-grid dest-grid-3" style="margin-top:20px">
+      <% destinations.slice(4).forEach(dest => { %>
+        <%- include('dest-card', { dest }) %>
+      <% }) %>
+    </div>
+
+    <div class="center-cta">
+      <button class="btn-outline-green">Xem tất cả điểm đến</button>
+    </div>
+  </div>
+</section>

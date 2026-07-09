@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Báo Cáo</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body { background: #F5F5F5; }
+.admin-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    grid-row: 1 / 3;
+    grid-column: 1;
+    background: linear-gradient(135deg, #046148 0%, #054d3a 100%);
+    color: #fff;
+    padding: 24px;
+}
+
+.admin-header {
+    grid-column: 2;
+    grid-row: 1;
+    background: #fff;
+    padding: 16px 24px;
+    border-bottom: 1px solid #E8E4DC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-main {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 32px;
+}    .admin-header h2 { margin: 0; color: var(--green); font-size: 20px; font-family: var(--font-serif); }
+    .sidebar-nav { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-nav li a { display: block; padding: 12px 16px; color: rgba(255,255,255,.7); border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500; transition: all .2s; }
+    .sidebar-nav li a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .sidebar-nav li a.active { background: #C9A96E; color: var(--green); }
+    .admin-table { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    .admin-table table { width: 100%; border-collapse: collapse; }
+    .admin-table th { background: #FAF8F4; padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; font-weight: 600; color: #666; border-bottom: 1px solid #E8E4DC; }
+    .admin-table td { padding: 16px; border-bottom: 1px solid #E8E4DC; font-size: 13px; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .section-title { margin-bottom: 20px; color: #1A1A1A; font-size: 18px; font-weight: 600; }
+   @media (max-width: 768px) {
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        display: none;
+    }
+
+    .admin-header,
+    .admin-main {
+        grid-column: 1;
+    }
+}
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <%- include('partials/sidebar', { active: 'reports' }) %>
+
+    <!-- Header -->
+    <header class="admin-header">
+      <h2>Báo Cáo</h2>
+      <a href="/admin/logout" style="padding: 10px 16px; background: var(--gold); color: var(--green); border: none; border-radius: 6px; cursor: pointer; font-weight: 600; text-decoration: none;">Đăng Xuất</a>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <% if (typeof dbConnected !== 'undefined' && !dbConnected) { %>
+        <div class="db-warning">⚠️ Chưa kết nối được MongoDB nên báo cáo đang hiển thị 0. Kiểm tra biến <code>MONGODB_URI</code> trong file <code>.env</code> rồi khởi động lại server.</div>
+      <% } %>
+      <h1 style="margin: 0 0 32px; color: #1A1A1A; font-size: 24px; font-weight: 700;">Báo Cáo Doanh Thu & Lượt Truy Cập</h1>
+
+      <!-- Overview cards -->
+      <div class="report-cards">
+        <div class="report-card">
+          <h3>Tổng Doanh Thu</h3>
+          <p class="report-value"><%= overview.totalRevenue.toLocaleString('vi-VN') %>₫</p>
+          <p class="report-sub"><%= overview.totalBookings %> đơn đặt tour</p>
+        </div>
+        <div class="report-card" style="border-left-color: #C9A96E;">
+          <h3>Tổng Lượt Truy Cập</h3>
+          <p class="report-value" style="color: #C9A96E;"><%= overview.totalVisits %></p>
+          <p class="report-sub">Trang chi tiết tour</p>
+        </div>
+        <div class="report-card" style="border-left-color: #28a745;">
+          <h3>Lượt Đã Đặt Tour</h3>
+          <p class="report-value" style="color: #28a745;"><%= overview.totalConverted %></p>
+          <p class="report-sub">Tỉ lệ chuyển đổi: <%= overview.overallConversionRate %>%</p>
+        </div>
+        <div class="report-card" style="border-left-color: #dc3545;">
+          <h3>Lượt Chưa Đặt Tour</h3>
+          <p class="report-value" style="color: #dc3545;"><%= overview.totalNotBooked %></p>
+          <p class="report-sub">Khách xem nhưng chưa đặt</p>
+        </div>
+      </div>
+
+      <!-- Revenue by month chart -->
+      <div class="chart-box">
+        <h2>Doanh Thu Theo Tháng</h2>
+        <% if (revenueByMonth && revenueByMonth.length > 0) { %>
+          <div class="bar-chart">
+            <% revenueByMonth.forEach(m => { %>
+              <div class="bar-chart-col">
+                <div class="bar-chart-value"><%= Math.round(m.revenue / 1000000) %>tr</div>
+                <div class="bar-chart-bar" style="height: <%= Math.max(4, Math.round((m.revenue / maxMonthRevenue) * 180)) %>px;"></div>
+                <div class="bar-chart-label"><%= m._id %></div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <p style="color: #999; text-align: center; padding: 40px 0;">Chưa có dữ liệu doanh thu.</p>
+        <% } %>
+      </div>
+
+      <!-- Per-tour visits vs bookings -->
+      <div style="margin-top: 16px;">
+        <h2 class="section-title">Lượt Truy Cập & Tỉ Lệ Đặt Tour Theo Từng Tour</h2>
+        <div class="admin-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Tour</th>
+                <th>Lượt truy cập</th>
+                <th>Đã đặt</th>
+                <th>Chưa đặt</th>
+                <th>Tỉ lệ chuyển đổi</th>
+                <th>Doanh thu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (tourStats && tourStats.length > 0) { %>
+                <% tourStats.forEach(t => { %>
+                  <tr>
+                    <td><strong><%= t.tourName %></strong></td>
+                    <td><%= t.totalVisits %></td>
+                    <td style="color: #28a745; font-weight: 600;"><%= t.booked %></td>
+                    <td style="color: #dc3545; font-weight: 600;"><%= t.notBooked %></td>
+                    <td style="min-width: 140px;">
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <div class="conversion-bar" style="flex:1;">
+                          <div class="conversion-bar-fill" style="width: <%= t.conversionRate %>%;"></div>
+                        </div>
+                        <span style="font-size:12px; color:#666; white-space:nowrap;"><%= t.conversionRate %>%</span>
+                      </div>
+                    </td>
+                    <td><strong><%= t.revenue.toLocaleString('vi-VN') %>₫</strong></td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #999;">Chưa có dữ liệu lượt truy cập.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

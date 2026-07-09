@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .visa-section { padding: 96px 0; background: #fff; }
+    .visa-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 48px; border-bottom: 2px solid #E8E4DC; }
+    .visa-tab { padding: 14px 24px; border: none; background: transparent; font-size: 14px; font-weight: 500; 
+                color: #999; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
+    .visa-tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .visa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+    .visa-card { border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid #E8E4DC; 
+                 transition: all .3s; padding: 24px; }
+    .visa-card:hover { box-shadow: 0 10px 30px rgba(4,97,72,.12); transform: translateY(-4px); border-color: var(--gold); }
+    .visa-country { font-size: 13px; color: var(--gold); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .visa-title { font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: #1A1A1A; margin: 0 0 12px; }
+    .visa-info { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; font-size: 14px; }
+    .visa-info-item { }
+    .visa-info-label { color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+    .visa-info-value { color: #1A1A1A; font-weight: 500; }
+    .visa-documents { margin: 20px 0; }
+    .visa-documents h4 { color: #1A1A1A; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 12px; }
+    .visa-documents ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .visa-documents li { display: flex; align-items: flex-start; gap: 8px; color: #666; font-size: 13px; }
+    .visa-documents li::before { content: '✓'; color: var(--gold); font-weight: bold; flex-shrink: 0; }
+    .visa-cta { display: flex; gap: 12px; margin-top: 20px; }
+    .visa-cta button { flex: 1; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; 
+                       transition: all .2s; border: none; }
+    .visa-consult { background: linear-gradient(135deg, var(--green), var(--green-mid)); color: #fff; }
+    .visa-consult:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(4,97,72,.25); }
+  </style>
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header-hero">
+      <div class="container">
+        <h1>Dịch Vụ Visa</h1>
+        <p>Xin visa nhanh chóng, chuyên nghiệp trên 50+ quốc gia</p>
+      </div>
+    </div>
+
+    <!-- Visa Services -->
+    <section class="visa-section">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 64px;">
+          <div class="section-eyebrow" style="justify-content: center; margin-bottom: 20px;">
+            <div class="line l"></div>
+            <span>Dịch vụ visa</span>
+            <div class="line r"></div>
+          </div>
+          <h2 class="section-title">Xin Visa Du Lịch Toàn Cầu</h2>
+          <p class="section-desc">Chúng tôi hỗ trợ xin visa nhanh chóng, tỷ lệ thành công cao. 
+            Đội ngũ chuyên gia sẽ hướng dẫn hồ sơ từ A-Z.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="visa-tabs">
+          <button class="visa-tab active" data-region="asia">Châu Á</button>
+          <button class="visa-tab" data-region="europe">Châu Âu</button>
+          <button class="visa-tab" data-region="americas">Châu Mỹ</button>
+          <button class="visa-tab" data-region="oceania">Châu Úc</button>
+        </div>
+
+        <!-- Visa Grid -->
+        <div class="visa-grid" id="visa-list">
+          <!-- Sample visa cards -->
+          <div class="visa-card">
+            <div class="visa-country">Thái Lan</div>
+            <h3 class="visa-title">Visa Du Lịch Thái Lan</h3>
+            
+            <div class="visa-info">
+              <div class="visa-info-item">
+                <div class="visa-info-label">Thời Gian Xử Lý</div>
+                <div class="visa-info-value">3-5 ngày</div>
+              </div>
+              <div class="visa-info-item">
+                <div class="visa-info-label">Giá Dịch Vụ</div>
+                <div class="visa-info-value" style="color: var(--green); font-weight: 700;">1.200.000₫</div>
+              </div>
+            </div>
+
+            <div class="visa-documents">
+              <h4>Hồ Sơ Cần Thiết</h4>
+              <ul>
+                <li>Hộ chiếu còn hiệu lực tối thiểu 6 tháng</li>
+                <li>2 ảnh 4x6 cm nền trắng</li>
+                <li>Giấy xác nhận tài chính</li>
+                <li>Vé máy bay</li>
+                <li>Booking khách sạn</li>
+              </ul>
+            </div>
+
+            <div class="visa-cta">
+              <button class="visa-consult">Tư Vấn Ngay</button>
+            </div>
+          </div>
+
+          <div class="visa-card">
+            <div class="visa-country">Singapore</div>
+            <h3 class="visa-title">Visa Du Lịch Singapore</h3>
+            
+            <div class="visa-info">
+              <div class="visa-info-item">
+                <div class="visa-info-label">Thời Gian Xử Lý</div>
+                <div class="visa-info-value">5-7 ngày</div>
+              </div>
+              <div class="visa-info-item">
+                <div class="visa-info-label">Giá Dịch Vụ</div>
+                <div class="visa-info-value" style="color: var(--green); font-weight: 700;">1.500.000₫</div>
+              </div>
+            </div>
+
+            <div class="visa-documents">
+              <h4>Hồ Sơ Cần Thiết</h4>
+              <ul>
+                <li>Hộ chiếu còn hiệu lực tối thiểu 6 tháng</li>
+                <li>2 ảnh 4x6 cm nền trắng</li>
+                <li>Giấy xác nhận tài chính</li>
+                <li>Vé máy bay</li>
+                <li>Booking khách sạn</li>
+              </ul>
+            </div>
+
+            <div class="visa-cta">
+              <button class="visa-consult">Tư Vấn Ngay</button>
+            </div>
+          </div>
+
+          <div class="visa-card">
+            <div class="visa-country">Nhật Bản</div>
+            <h3 class="visa-title">Visa Du Lịch Nhật Bản</h3>
+            
+            <div class="visa-info">
+              <div class="visa-info-item">
+                <div class="visa-info-label">Thời Gian Xử Lý</div>
+                <div class="visa-info-value">7-10 ngày</div>
+              </div>
+              <div class="visa-info-item">
+                <div class="visa-info-label">Giá Dịch Vụ</div>
+                <div class="visa-info-value" style="color: var(--green); font-weight: 700;">2.500.000₫</div>
+              </div>
+            </div>
+
+            <div class="visa-documents">
+              <h4>Hồ Sơ Cần Thiết</h4>
+              <ul>
+                <li>Hộ chiếu còn hiệu lực tối thiểu 6 tháng</li>
+                <li>3 ảnh 4x6 cm nền trắng</li>
+                <li>Đơn xin visa</li>
+                <li>Giấy xác nhận tài chính</li>
+                <li>Vé máy bay và booking khách sạn</li>
+              </ul>
+            </div>
+
+            <div class="visa-cta">
+              <button class="visa-consult">Tư Vấn Ngay</button>
+            </div>
+          </div>
+
+          <div class="visa-card">
+            <div class="visa-country">Pháp</div>
+            <h3 class="visa-title">Visa Schengen Pháp</h3>
+            
+            <div class="visa-info">
+              <div class="visa-info-item">
+                <div class="visa-info-label">Thời Gian Xử Lý</div>
+                <div class="visa-info-value">10-15 ngày</div>
+              </div>
+              <div class="visa-info-item">
+                <div class="visa-info-label">Giá Dịch Vụ</div>
+                <div class="visa-info-value" style="color: var(--green); font-weight: 700;">3.500.000₫</div>
+              </div>
+            </div>
+
+            <div class="visa-documents">
+              <h4>Hồ Sơ Cần Thiết</h4>
+              <ul>
+                <li>Hộ chiếu còn hiệu lực tối thiểu 6 tháng</li>
+                <li>2 ảnh 3,5x4,5 cm nền trắng</li>
+                <li>Phiếu đơn xin visa</li>
+                <li>Bảo hiểm y tế</li>
+                <li>Giấy xác nhận tài chính</li>
+              </ul>
+            </div>
+
+            <div class="visa-cta">
+              <button class="visa-consult">Tư Vấn Ngay</button>
+            </div>
+          </div>
+
+          <div class="visa-card">
+            <div class="visa-country">Úc</div>
+            <h3 class="visa-title">Visa Du Lịch Úc</h3>
+            
+            <div class="visa-info">
+              <div class="visa-info-item">
+                <div class="visa-info-label">Thời Gian Xử Lý</div>
+                <div class="visa-info-value">5-7 ngày</div>
+              </div>
+              <div class="visa-info-item">
+                <div class="visa-info-label">Giá Dịch Vụ</div>
+                <div class="visa-info-value" style="color: var(--green); font-weight: 700;">2.200.000₫</div>
+              </div>
+            </div>
+
+            <div class="visa-documents">
+              <h4>Hồ Sơ Cần Thiết</h4>
+              <ul>
+                <li>Hộ chiếu còn hiệu lực tối thiểu 6 tháng</li>
+                <li>2 ảnh màu 4x6 cm</li>
+                <li>Đơn đăng ký trực tuyến</li>
+                <li>Giấy xác nhận tài chính</li>
+                <li>Vé máy bay khứ hồi</li>
+              </ul>
+            </div>
+
+            <div class="visa-cta">
+              <button class="visa-consult">Tư Vấn Ngay</button>
+            </div>
+          </div>
+
+          <div class="visa-card">
+            <div class="visa-country">Mỹ</div>
+            <h3 class="visa-title">Visa Du Lịch Mỹ</h3>
+            
+            <div class="visa-info">
+              <div class="visa-info-item">
+                <div class="visa-info-label">Thời Gian Xử Lý</div>
+                <div class="visa-info-value">15-30 ngày</div>
+              </div>
+              <div class="visa-info-item">
+                <div class="visa-info-label">Giá Dịch Vụ</div>
+                <div class="visa-info-value" style="color: var(--green); font-weight: 700;">3.200.000₫</div>
+              </div>
+            </div>
+
+            <div class="visa-documents">
+              <h4>Hồ Sơ Cần Thiết</h4>
+              <ul>
+                <li>Hộ chiếu còn hiệu lực tối thiểu 6 tháng</li>
+                <li>2 ảnh 5x5 cm</li>
+                <li>Đơn xin visa DS-160</li>
+                <li>Giấy xác nhận tài chính</li>
+                <li>Thư mời (nếu có)</li>
+              </ul>
+            </div>
+
+            <div class="visa-cta">
+              <button class="visa-consult">Tư Vấn Ngay</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <%- include('partials/cta') %>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.visa-tab');
+      const consultBtns = document.querySelectorAll('.visa-consult');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          // Filter visa cards by region - demo only
+          alert('Đang hiển thị: ' + tab.textContent);
+        });
+      });
+
+      consultBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Vui lòng gọi hotline: 0969 691 889 để được tư vấn visa');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

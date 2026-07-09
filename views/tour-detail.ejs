@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header-hero">
+      <div class="container">
+        <h1><%= tour.name %></h1>
+        <p><%= tour.location %> • <%= tour.duration %></p>
+      </div>
+    </div>
+
+    <!-- Tour Detail Content -->
+    <section class="tour-detail-container">
+      <div class="container">
+        <div class="tour-detail-grid">
+          <!-- Main Content -->
+          <div>
+            <!-- Image Gallery -->
+            <div class="tour-detail-image-wrap">
+              <img id="main-image" src="<%= tour.image %>" alt="<%= tour.name %>" onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop'">
+            </div>
+            <div class="tour-detail-gallery-thumb">
+              <img src="<%= tour.image %>" alt="Ảnh 1" class="active" loading="lazy" onclick="document.getElementById('main-image').src=this.src">
+              <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=200&h=200&fit=crop" alt="Ảnh 2" loading="lazy" onclick="document.getElementById('main-image').src=this.src">
+              <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=200&h=200&fit=crop" alt="Ảnh 3" loading="lazy" onclick="document.getElementById('main-image').src=this.src">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&h=200&fit=crop" alt="Ảnh 4" loading="lazy" onclick="document.getElementById('main-image').src=this.src">
+            </div>
+
+            <!-- Tour Information Sections -->
+            <div class="tour-detail-content">
+              <!-- Overview -->
+              <div class="detail-section">
+                <h3>Tổng Quan Tour</h3>
+                <p style="color: #666; line-height: 1.8;">
+                  Khám phá vẻ đẹp tuyệt vời của <%= tour.location %>. Tour này kết hợp những trải nghiệm độc đáo, 
+                  dịch vụ 5 sao và sự chăm sóc tận tình từ đội ngũ chuyên gia du lịch của VIETBLUETOUR. 
+                  <%= tour.duration %> là thời gian hoàn hảo để tìm hiểu văn hóa địa phương, khám phá cảnh quan thiên nhiên 
+                  và nếm thử ẩm thực đặc sắc.
+                </p>
+              </div>
+
+              <!-- Itinerary -->
+              <div class="detail-section">
+                <h3>Lịch Trình Chi Tiết</h3>
+                <div class="tour-itinerary">
+                  <div class="itinerary-day">
+                    <div class="itinerary-day-title">Ngày 1: Khởi hành - Đến nơi</div>
+                    <div class="itinerary-day-content">
+                      Khách hàng tập trung tại điểm hẹn. Đón khách từ sân bay/nhà ga. Nhận phòng tại khách sạn 4 sao. 
+                      Tối: ăn tối tự do, nghỉ ngơi.
+                    </div>
+                  </div>
+                  <div class="itinerary-day">
+                    <div class="itinerary-day-title">Ngày 2: Khám Phá Địa Phương</div>
+                    <div class="itinerary-day-content">
+                      Sáng: Tham quan các điểm du lịch nổi tiếng. Trưa: Ăn cơm địa phương. Chiều: Hoạt động tự do, 
+                      shopping tại các khu mua sắm. Tối: Ăn tối buffet, nghỉ ngơi tại khách sạn.
+                    </div>
+                  </div>
+                  <div class="itinerary-day">
+                    <div class="itinerary-day-title">Ngày 3: Trở Về</div>
+                    <div class="itinerary-day-content">
+                      Sáng: Ăn sáng tại khách sạn. Hoạt động tự do cho đến giờ khởi hành. Đưa đón sân bay/nhà ga. 
+                      Kết thúc tour.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Includes -->
+              <div class="detail-section">
+                <h3>Bao Gồm Trong Tour</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                  <div>
+                    <h4>🏨 Lưu Trú</h4>
+                    <p style="color: #666; font-size: 14px; margin: 8px 0 0;">Khách sạn 4 sao, phòng với đầy đủ tiện ích</p>
+                  </div>
+                  <div>
+                    <h4>🍽️ Ăn Uống</h4>
+                    <p style="color: #666; font-size: 14px; margin: 8px 0 0;">Ăn sáng buffet, ăn trưa, tối tại nhà hàng</p>
+                  </div>
+                  <div>
+                    <h4>🚗 Vận Chuyển</h4>
+                    <p style="color: #666; font-size: 14px; margin: 8px 0 0;">Xe ô tô hiện đại, tài xế chuyên nghiệp 24/7</p>
+                  </div>
+                  <div>
+                    <h4>👨‍💼 Hướng Dẫn</h4>
+                    <p style="color: #666; font-size: 14px; margin: 8px 0 0;">Hướng dẫn viên tiếng Việt, am hiểu địa phương</p>
+                  </div>
+                  <div>
+                    <h4>🎟️ Vào Cửa</h4>
+                    <p style="color: #666; font-size: 14px; margin: 8px 0 0;">Vé vào tất cả các điểm tham quan được liệt kê</p>
+                  </div>
+                  <div>
+                    <h4>💰 Bảo Hiểm</h4>
+                    <p style="color: #666; font-size: 14px; margin: 8px 0 0;">Bảo hiểm du lịch toàn suất</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Policies -->
+              <div class="detail-section">
+                <h3>Chính Sách Hủy & Hoàn Tiền</h3>
+                <ul style="color: #666; line-height: 1.8; padding-left: 20px;">
+                  <li>Hủy tour trước 30 ngày: Hoàn 100% tiền đặt cọc</li>
+                  <li>Hủy tour từ 15-30 ngày: Hoàn 50% tiền đặt cọc</li>
+                  <li>Hủy tour dưới 15 ngày: Không hoàn tiền</li>
+                  <li>Trường hợp lực bất khả kháng: Chuyển sang tour khác hoặc hoàn toàn bộ tiền</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar - Booking Box -->
+          <div class="tour-detail-sidebar">
+            <div class="tour-detail-box">
+              <h2 class="tour-detail-title"><%= tour.name %></h2>
+              
+              <div class="tour-detail-rating">
+                <div class="stars">
+                  <% for (let s = 1; s <= 5; s++) { %>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="<%= s <= Math.round(tour.rating) ? 'currentColor' : 'none' %>" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <% } %>
+                </div>
+                <span><%= tour.rating.toFixed(1) %> (<%= tour.reviews %> đánh giá)</span>
+              </div>
+
+              <div class="tour-detail-price-box">
+                <% if (tour.originalPrice) { %>
+                  <div class="tour-detail-price-old"><%= tour.originalPrice %></div>
+                <% } %>
+                <div class="tour-detail-price-new"><%= tour.price %></div>
+                <div class="tour-detail-price-per">/người</div>
+              </div>
+
+              <div class="tour-detail-info">
+                <div class="tour-detail-info-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  <span><strong><%= tour.duration %></strong></span>
+                </div>
+                <div class="tour-detail-info-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span><strong><%= tour.location %></strong></span>
+                </div>
+              </div>
+
+              <a href="/dat-tour/<%= tour._id %>" class="btn-book-now" style="display:block; text-align:center; text-decoration:none;">Đặt Tour Ngay</a>
+<a href="/lien-he" class="btn-book-now" style="display:block; text-align:center; text-decoration:none;">
+    tư vấn miễn phí
+</a>
+              <hr style="margin: 16px 0; border: none; border-top: 1px solid #E8E4DC;">
+
+              <div style="font-size: 13px; color: #666;">
+                <div style="margin-bottom: 12px;">
+                  <strong style="color: #1A1A1A;">📞 Hotline</strong><br>
+                  0969 691 889
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <strong style="color: #1A1A1A;">📧 Email</strong><br>
+                  ceo@vietbluetour.com
+                </div>
+                <div>
+                  <strong style="color: #1A1A1A;">⏰ Giờ Làm Việc</strong><br>
+                  T2-T6: 8h00-18h00<br>
+                  T7: 8h00-17h00<br>
+                  CN: 9h00-16h00
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

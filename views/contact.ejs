@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 32px; } }
+    .contact-info { display: flex; flex-direction: column; gap: 32px; }
+    .contact-item { display: flex; gap: 16px; }
+    .contact-icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(4,97,72,.1); 
+                   display: flex; align-items: center; justify-content: center; color: var(--green); 
+                   flex-shrink: 0; font-size: 24px; }
+    .contact-item h3 { font-size: 16px; font-weight: 600; color: #1A1A1A; margin: 0 0 8px; }
+    .contact-item p { color: #666; font-size: 14px; margin: 0; line-height: 1.6; }
+    .contact-item a { color: var(--green); text-decoration: none; font-weight: 500; }
+    .contact-item a:hover { color: var(--gold); }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .contact-input { padding: 12px 16px; border: 1px solid #E8E4DC; border-radius: 8px; 
+                     font-size: 14px; font-family: var(--font-sans); outline: none; }
+    .contact-input:focus { border-color: var(--gold); background: rgba(4,97,72,.02); }
+    .contact-textarea { resize: vertical; min-height: 140px; }
+    .contact-checkbox { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+    .contact-checkbox input { margin-top: 4px; cursor: pointer; }
+    .contact-checkbox label { color: #666; font-size: 13px; line-height: 1.5; cursor: pointer; }
+    .contact-submit { padding: 14px; border-radius: 8px; background: linear-gradient(135deg, var(--green), var(--green-mid)); 
+                      color: #fff; font-size: 14px; font-weight: 600; border: none; cursor: pointer; 
+                      transition: all .2s; }
+    .contact-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(4,97,72,.25); }
+    .map-container { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #E8E4DC; }
+    .office-hours { background: #FAF8F4; padding: 20px; border-radius: 12px; margin-top: 24px; }
+    .office-hours h4 { margin: 0 0 12px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .office-hours ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .office-hours li { font-size: 13px; color: #666; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header-hero">
+      <div class="container">
+        <h1>Liên Hệ Với Chúng Tôi</h1>
+        <p>Chúng tôi sẵn sàng trả lời mọi câu hỏi của bạn 24/7</p>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="section" style="background: #fff;">
+      <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto;">
+          <div class="contact-grid">
+            <!-- Contact Form -->
+            <div>
+              <h2 style="font-family: var(--font-serif); font-size: 24px; font-weight: 600; color: var(--green); margin: 0 0 24px;">Gửi Tin Nhắn Cho Chúng Tôi</h2>
+              
+              <form class="contact-form" id="contact-form">
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; color: #A0A0A0; font-weight: 500;">Họ và Tên</label>
+                  <input type="text" name="name" placeholder="Nhập họ và tên của bạn" class="contact-input" required>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; color: #A0A0A0; font-weight: 500;">Email</label>
+                  <input type="email" name="email" placeholder="Nhập email của bạn" class="contact-input" required>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; color: #A0A0A0; font-weight: 500;">Số Điện Thoại</label>
+                  <input type="tel" name="phone" placeholder="Nhập số điện thoại" class="contact-input" required>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; color: #A0A0A0; font-weight: 500;">Chủ Đề</label>
+                  <select name="subject" class="contact-input" required>
+                    <option value="">-- Chọn chủ đề --</option>
+                    <option value="booking">Đặt tour</option>
+                    <option value="visa">Xin visa</option>
+                    <option value="complaint">Góp ý</option>
+                    <option value="other">Khác</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; color: #A0A0A0; font-weight: 500;">Nội Dung Tin Nhắn</label>
+                  <textarea name="message" placeholder="Nhập nội dung tin nhắn" class="contact-input contact-textarea" required></textarea>
+                </div>
+
+                <div class="contact-checkbox">
+                  <input type="checkbox" id="agree" name="agree" required>
+                  <label for="agree">Tôi đồng ý với <a href="#" style="color: var(--green);">Điều khoản sử dụng</a> và <a href="#" style="color: var(--green);">Chính sách bảo mật</a> của VIETBLUETOUR</label>
+                </div>
+
+                <button type="submit" class="contact-submit">Gửi Tin Nhắn</button>
+
+                <div id="form-success" style="display: none; background: rgba(4,97,72,.1); color: var(--green); 
+                                             padding: 16px; border-radius: 8px; text-align: center; margin-top: 16px;">
+                  ✓ Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm.
+                </div>
+              </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+              <h2 style="font-family: var(--font-serif); font-size: 24px; font-weight: 600; color: var(--green); margin: 0 0 24px;">Thông Tin Liên Hệ</h2>
+
+              <div class="contact-info">
+                <!-- Hanoi Office -->
+                <div>
+                  <h3 style="color: var(--green); margin-bottom: 16px;">Trụ Sở Hà Nội</h3>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                      <h3>Địa Chỉ</h3>
+                      <p>Số 08 Ngõ 16/01, Phố Thái Hà, Phường Đống Đa, TP Hà Nội</p>
+                      <p style="margin-top:4px;">Số 13A, Ngách 55/24 Hoàng Hoa Thám, Phường Ngọc Hà, TP Hà Nội</p>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                      <h3>Điện Thoại</h3>
+                      <p><a href="tel:+842473021889">(024) 730 21889</a></p>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">💬</div>
+                    <div>
+                      <h3>Hotline</h3>
+                      <p><a href="tel:0969691889">0969 691 889</a></p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- HCM Office -->
+                <div style="border-top: 1px solid #E8E4DC; padding-top: 24px;">
+                  <h3 style="color: var(--green); margin-bottom: 16px;">Trụ Sở TP. Hồ Chí Minh</h3>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                      <h3>Địa Chỉ</h3>
+                      <p>23 Quách Văn Tuấn, Phường Bảy Hiền, TP Hồ Chí Minh</p>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                      <h3>Điện Thoại</h3>
+                      <p><a href="tel:+842873021889">(028) 730 21889</a></p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Da Nang Office -->
+                <div style="border-top: 1px solid #E8E4DC; padding-top: 24px;">
+                  <h3 style="color: var(--green); margin-bottom: 16px;">Trụ Sở Đà Nẵng</h3>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                      <h3>Địa Chỉ</h3>
+                      <p>267 Trần Phú, Phường Hải Châu, TP Đà Nẵng</p>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>
+                      <h3>Email</h3>
+                      <p><a href="mailto:ceo@vietbluetour.com">ceo@vietbluetour.com</a></p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Hours -->
+                <div class="office-hours">
+                  <h4>⏰ Giờ Làm Việc</h4>
+                  <ul>
+                    <li><span>Thứ 2 - Thứ 6</span> <span>08:00 - 18:00</span></li>
+                    <li><span>Thứ 7</span> <span>08:00 - 17:00</span></li>
+                    <li><span>Chủ Nhật</span> <span>09:00 - 16:00</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Section -->
+          <div style="margin-top: 64px;">
+            <h2 style="font-family: var(--font-serif); font-size: 24px; font-weight: 600; color: var(--green); 
+                       text-align: center; margin: 0 0 32px;">Bản Đồ Vị Trí</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+              <div>
+                <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin: 0 0 12px;">Hà Nội</h3>
+                <div class="map-container">
+                  <iframe width="100%" height="100%" style="border: none;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.7659157877!2d105.84298631541622!3d21.028512185988446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9bd9861ca1%3A0x5e10fb2e183ac0d0!2sVietcombank%20Tower!5e0!3m2!1svi!2s!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+              <div>
+                <h3 style="font-size: 16px; font-weight: 600; color: #1A1A1A; margin: 0 0 12px;">TP. Hồ Chí Minh</h3>
+                <div class="map-container">
+                  <iframe width="100%" height="100%" style="border: none;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4861701319367!2d106.6923095!3d10.776988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752e9ee8ec0b4d%3A0x2c4a8b4e8b3a5e6f!2sNguyen%20Hue%20Street!5e0!3m2!1svi!2s!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <%- include('partials/cta') %>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contact-form');
+      const successMsg = document.getElementById('form-success');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          phone: formData.get('phone'),
+          email: formData.get('email'),
+          subject: formData.get('subject'),
+          message: formData.get('message')
+        };
+
+        try {
+          const response = await fetch('/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            form.reset();
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+              successMsg.style.display = 'none';
+            }, 5000);
+          } else {
+            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Có lỗi kết nối. Vui lòng thử lại.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header-hero">
+      <div class="container">
+        <h1>Tour Nước Ngoài</h1>
+        <p>Khám phá những điểm đến hấp dẫn trên toàn thế giới cùng VIETBLUETOUR</p>
+      </div>
+    </div>
+
+    <!-- Filter & List Section -->
+    <section class="filter-section">
+      <div class="container">
+        <div class="filter-container">
+          <!-- Simplified filter for international -->
+          <div class="filter-sidebar">
+            <div class="filter-group">
+              <h3>Châu lục</h3>
+              <div class="filter-option">
+                <input type="checkbox" id="region-asia" class="filter-checkbox" value="Châu Á">
+                <label for="region-asia">Châu Á</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="region-europe" class="filter-checkbox" value="Châu Âu">
+                <label for="region-europe">Châu Âu</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="region-americas" class="filter-checkbox" value="Châu Mỹ">
+                <label for="region-americas">Châu Mỹ</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="region-oceania" class="filter-checkbox" value="Châu Úc">
+                <label for="region-oceania">Châu Úc</label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h3>Thời gian</h3>
+              <div class="filter-option">
+                <input type="checkbox" id="duration-1-5" class="filter-checkbox" value="1-5">
+                <label for="duration-1-5">1-5 ngày</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="duration-6-10" class="filter-checkbox" value="6-10">
+                <label for="duration-6-10">6-10 ngày</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="duration-10plus" class="filter-checkbox" value="10+">
+                <label for="duration-10plus">10 ngày trở lên</label>
+              </div>
+            </div>
+
+            <button class="btn-outline-green" id="reset-filters" style="width: 100%;">Xoá bộ lọc</button>
+          </div>
+
+          <div class="tours-list-main">
+            <div id="tours-list" class="tours-list-grid">
+              <!-- Tours will be rendered here -->
+            </div>
+
+            <div id="no-results" class="no-results" style="display:none;">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10a4 4 0 018 0m-13 8a8 8 0 0113.4-1.4L21 21M15 3H9a6 6 0 000 12h.01"></path></svg>
+              <h3>Không tìm thấy tour phù hợp</h3>
+              <p>Vui lòng thử thay đổi bộ lọc của bạn</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const toursList = document.getElementById('tours-list');
+      const noResults = document.getElementById('no-results');
+      
+      // Fetch international tours
+      try {
+        const response = await fetch('/api/tours?type=international');
+        const tours = await response.json();
+        
+        function renderTours(toursToShow) {
+          toursList.innerHTML = '';
+          if (toursToShow.length === 0) {
+            noResults.style.display = 'block';
+            return;
+          }
+          noResults.style.display = 'none';
+          
+          toursToShow.forEach(tour => {
+            const tourCard = document.createElement('div');
+            tourCard.className = 'tour-list-card';
+            tourCard.innerHTML = `
+              <div class="tour-list-img">
+                <img src="${tour.image}" alt="${tour.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=400&fit=crop'">
+                ${tour.badge ? `<div class="tour-list-badge" style="background-color:${tour.badgeColor || '#C9A96E'}">${tour.badge}</div>` : ''}
+              </div>
+              <div class="tour-list-body">
+                <div class="tour-list-loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  ${tour.location}
+                </div>
+                <h3 class="tour-list-name">${tour.name}</h3>
+                <div class="tour-list-details">
+                  <div class="tour-list-detail-item">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+                    ${tour.duration}
+                  </div>
+                  <div class="tour-list-detail-item">
+                    ⭐ ${tour.rating.toFixed(1)} (${tour.reviews})
+                  </div>
+                </div>
+                <div class="tour-list-footer">
+                  <div class="tour-list-price">
+                    ${tour.originalPrice ? `<div class="tour-list-price-old">${tour.originalPrice}</div>` : ''}
+                    <div class="tour-list-price-new">${tour.price}</div>
+                    <div class="tour-list-price-per">/người</div>
+                  </div>
+                  <button class="btn-tour-book" onclick="window.location.href='/tour-detail/${tour._id}'">Chi tiết</button>
+                </div>
+              </div>
+            `;
+            toursList.appendChild(tourCard);
+          });
+        }
+        
+        renderTours(tours);
+        
+        // Filter functionality
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+        const resetBtn = document.getElementById('reset-filters');
+        
+        function applyFilters() {
+          const filtered = tours.filter(tour => {
+            const selectedRegions = Array.from(document.querySelectorAll('.filter-checkbox:checked'))
+              .filter(cb => cb.value.includes('Châu'))
+              .map(cb => cb.value);
+            
+            if (selectedRegions.length > 0 && !selectedRegions.includes(tour.location.split(',')[0].trim())) {
+              return false;
+            }
+            
+            return true;
+          });
+          
+          renderTours(filtered);
+        }
+        
+        filterCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+        resetBtn.addEventListener('click', () => {
+          filterCheckboxes.forEach(cb => cb.checked = false);
+          renderTours(tours);
+        });
+        
+      } catch (err) {
+        console.error('Error loading tours:', err);
+        toursList.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;">Có lỗi khi tải tour. Vui lòng thử lại.</p>';
+      }
+    });
+  </script>
+</body>
+</html>
