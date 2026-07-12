@@ -35,6 +35,8 @@ router.use((req, res, next) => {
   }
   next();
 });
+// Gắn trạng thái kết nối kkk vào mọi trang admin để hiển thị cảnh báo nếu chưa kết nối được
+
 
 // GET /admin/login - Show login page
 router.get('/login', (req, res) => {
