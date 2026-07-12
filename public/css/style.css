@@ -88,6 +88,7 @@ button { font-family: inherit; }
   display: flex; flex-direction: column; padding: 32px; background: var(--green);
   border-left: 1px solid rgba(201,169,110,.2); transform: translateX(100%); transition: transform .4s;
 }
+/* Khi drawer mở, di chuyển nó vào vị trí ban đầu */
 .vbt-drawer-overlay.open .vbt-drawer { transform: translateX(0); }
 .vbt-drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
 .vbt-drawer-close { background: none; border: none; color: rgba(255,255,255,.6); cursor: pointer; }
