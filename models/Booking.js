@@ -18,6 +18,7 @@ const bookingSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+//heheheheeh
 
 // Tự sinh mã đặt tour dạng VBT-YYMMDD-XXXX nếu chưa có
 bookingSchema.pre('validate', function (next) {
