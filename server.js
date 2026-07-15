@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const connectDB = require('./config/db');
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -71,3 +72,4 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 VIETBLUETOUR đang chạy tại http://localhost:${PORT}`);
 });
+module.exports = app;
